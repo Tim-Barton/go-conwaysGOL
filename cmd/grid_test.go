@@ -1,46 +1,59 @@
 package main
 
-import "testing"
+import (
+	"testing"
+)
 
-func TestNewGrid (t *testing.T) {
-  // 3x3 grid all of all false
+func TestNewGrid(t *testing.T) {
+	// 3x3 grid all of all false
 	grid := NewGrid(3, 3)
 	for i := range grid.grid {
 		for j, gridPoint := range grid.grid[i] {
-			if gridPoint.status {
-				t.Errorf("Grid at %d:%d was True", i, j)
+			if gridPoint.status == 1 {
+				t.Errorf("Grid at %d:%d was Alive", i, j)
 			}
 		}
 	}
 }
 
 func TestDodgyGrid(t *testing.T) {
-	// 3x3 grid all of all false
 	grid := NewGrid(3, 3)
-  grid.grid[0][0] = true
-  grid.grid[0][2] = true
-  grid.grid[0][0] = true
-  grid.grid[0][0] = true
-  grid.grid[0][0] = true
-
+	grid.Set(0, 0, Grid{1})
+	grid.Set(0, 1, Grid{1})
+	grid.Set(0, 2, Grid{1})
 
 	newGrid := grid.Tick()
 
-	//old grid should be unchanged (all False)
+	//old grid should be unchanged
+	//fmt.Println(grid.Print())
 	for i := range grid.grid {
 		for j, gridPoint := range grid.grid[i] {
-			if gridPoint.status {
-				t.Errorf("Grid at %d:%d was True", i, j)
+			if i == 0 {
+				if gridPoint.status == 0 {
+					t.Errorf("Grid at %d:%d was Dead", i, j)
+				}
+			} else {
+				if gridPoint.status == 1 {
+					t.Errorf("Grid at %d:%d was Alive", i, j)
+				}
 			}
+
 		}
 	}
-	//new Grid should be all True
+	//new grid 0,1 & 1,1 should be Alive
+	//fmt.Println(newGrid.Print())
 	for i := range newGrid.grid {
 		for j, gridPoint := range newGrid.grid[i] {
-			if !gridPoint.status {
-				t.Errorf("New Grid at %d:%d was False", i, j)
+			if (i == 0 && j == 1) || (i == 1 && j == 1) {
+				if gridPoint.status == 0 {
+					t.Errorf("New Grid at %d:%d was Dead", i, j)
+				}
+			} else {
+				if gridPoint.status == 1 {
+					t.Errorf("New Grid at %d:%d was Alive", i, j)
+				}
 			}
+
 		}
 	}
-
 }
