@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math/rand"
+)
 
 type Grid struct {
 	status int
@@ -85,6 +88,14 @@ func (l LifeGrid) Rows() int {
 
 func (l LifeGrid) Cols() int {
 	return l.cols
+}
+
+func (l *LifeGrid) Randomize() {
+	for row := range l.grid {
+		for col := range l.grid[row] {
+			l.Set(row, col, Grid{int(rand.Int31n(2))})
+		}
+	}
 }
 
 func NewGrid(rows, cols int) LifeGrid {
