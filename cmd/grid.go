@@ -58,7 +58,7 @@ func (l LifeGrid) Tick() LifeGrid {
 }
 
 func (l LifeGrid) Same(newGrid LifeGrid) bool {
-	if (l.rows != newGrid.rows || l.cols != newGrid.cols) {
+	if l.rows != newGrid.rows || l.cols != newGrid.cols {
 		return false
 	}
 	for row := range l.grid {
@@ -68,7 +68,7 @@ func (l LifeGrid) Same(newGrid LifeGrid) bool {
 			}
 		}
 	}
-	return true	
+	return true
 }
 
 func (l *LifeGrid) Set(row, column int, value Grid) {
@@ -77,6 +77,14 @@ func (l *LifeGrid) Set(row, column int, value Grid) {
 
 func (l LifeGrid) Print() string {
 	return fmt.Sprintf("%v", l.grid)
+}
+
+func (l LifeGrid) Rows() int {
+	return l.rows
+}
+
+func (l LifeGrid) Cols() int {
+	return l.cols
 }
 
 func NewGrid(rows, cols int) LifeGrid {
