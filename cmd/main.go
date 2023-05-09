@@ -6,6 +6,8 @@ import (
 	"log"
 	"time"
 
+	"github.com/Tim-Barton/go-conwaysGOL/pkg/grid"
+
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
@@ -13,12 +15,12 @@ type Game struct {
 	alive *ebiten.Image
 	dead  *ebiten.Image
 
-	grid LifeGrid
+	grid grid.LifeGrid
 
 	tickCount int
 }
 
-func NewGame(grid LifeGrid) Game {
+func NewGame(grid grid.LifeGrid) Game {
 	alive := ebiten.NewImage(3, 3)
 	alive.Fill(color.Black)
 	dead := ebiten.NewImage(3, 3)
@@ -53,7 +55,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 			geo := ebiten.GeoM{}
 			geo.Translate(float64(3*j), float64(3*i))
 			status, _ := g.grid.Get(i, j)
-			if status.status == 0 {
+			if status.Status == 0 {
 				screen.DrawImage(g.dead, &ebiten.DrawImageOptions{GeoM: geo})
 			}
 		}
@@ -67,7 +69,7 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 func main() {
 	fmt.Println("Hello World")
 
-	grid := NewGrid(300, 300)
+	grid := grid.NewGrid(300, 300)
 	grid.Randomize()
 
 	fmt.Println(grid.Print())

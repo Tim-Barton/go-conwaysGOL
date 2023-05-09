@@ -1,4 +1,4 @@
-package main
+package grid
 
 import (
 	"testing"
@@ -9,7 +9,7 @@ func TestNewGrid(t *testing.T) {
 	grid := NewGrid(3, 3)
 	for i := range grid.grid {
 		for j, gridPoint := range grid.grid[i] {
-			if gridPoint.status == 1 {
+			if gridPoint.Status == 1 {
 				t.Errorf("Grid at %d:%d was Alive", i, j)
 			}
 		}
@@ -29,11 +29,11 @@ func TestDodgyGrid(t *testing.T) {
 	for i := range grid.grid {
 		for j, gridPoint := range grid.grid[i] {
 			if i == 0 {
-				if gridPoint.status == 0 {
+				if gridPoint.Status == 0 {
 					t.Errorf("Grid at %d:%d was Dead", i, j)
 				}
 			} else {
-				if gridPoint.status == 1 {
+				if gridPoint.Status == 1 {
 					t.Errorf("Grid at %d:%d was Alive", i, j)
 				}
 			}
@@ -45,11 +45,11 @@ func TestDodgyGrid(t *testing.T) {
 	for i := range newGrid.grid {
 		for j, gridPoint := range newGrid.grid[i] {
 			if (i == 0 && j == 1) || (i == 1 && j == 1) {
-				if gridPoint.status == 0 {
+				if gridPoint.Status == 0 {
 					t.Errorf("New Grid at %d:%d was Dead", i, j)
 				}
 			} else {
-				if gridPoint.status == 1 {
+				if gridPoint.Status == 1 {
 					t.Errorf("New Grid at %d:%d was Alive", i, j)
 				}
 			}
