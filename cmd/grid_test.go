@@ -57,3 +57,41 @@ func TestDodgyGrid(t *testing.T) {
 		}
 	}
 }
+
+func TestSameGrid(t *testing.T) {
+
+	grid := NewGrid(3, 3)
+	grid.Set(0, 0, Grid{1})
+	grid.Set(0, 1, Grid{1})
+	grid.Set(0, 2, Grid{1})
+
+	if !grid.Same(grid) {
+		t.Errorf("Grids should match")
+	}
+
+	newGrid1 := NewGrid(3, 3)
+	newGrid1.Set(0, 0, Grid{1})
+	newGrid1.Set(0, 1, Grid{1})
+	newGrid1.Set(0, 2, Grid{1})
+
+	if !grid.Same(newGrid1) {
+		t.Errorf("Grids should match")
+	}
+
+	newGrid2 := NewGrid(3, 2)
+	newGrid2.Set(0, 0, Grid{1})
+	newGrid2.Set(0, 1, Grid{1})
+
+	if grid.Same(newGrid2) {
+		t.Errorf("Grids shouldn't match - different size")
+	}
+
+	newGrid3 := NewGrid(3, 3)
+	newGrid3.Set(0, 0, Grid{1})
+	newGrid3.Set(0, 1, Grid{1})
+
+	if grid.Same(newGrid2) {
+		t.Errorf("Grids shouldn't match - same size, different values")
+	}
+
+}

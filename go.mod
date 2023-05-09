@@ -1,3 +1,3 @@
 module github.com/Tim-Barton/go-conwaysGOL
 
-go 1.18
+go 1.20

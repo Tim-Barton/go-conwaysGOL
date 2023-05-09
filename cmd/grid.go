@@ -57,6 +57,20 @@ func (l LifeGrid) Tick() LifeGrid {
 	return LifeGrid{grid: newGrid, rows: l.rows, cols: l.cols}
 }
 
+func (l LifeGrid) Same(newGrid LifeGrid) bool {
+	if (l.rows != newGrid.rows || l.cols != newGrid.cols) {
+		return false
+	}
+	for row := range l.grid {
+		for col := range l.grid[row] {
+			if l.grid[row][col] != newGrid.grid[row][col] {
+				return false
+			}
+		}
+	}
+	return true	
+}
+
 func (l *LifeGrid) Set(row, column int, value Grid) {
 	l.grid[row][column] = value
 }
