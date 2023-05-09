@@ -60,7 +60,7 @@ func (l StructuredLifeGrid) Tick() LifeGrid {
 	return &StructuredLifeGrid{grid: newGrid, rows: l.rows, cols: l.cols}
 }
 
-func (l StructuredLifeGrid) Same(newGrid StructuredLifeGrid) bool {
+func (l StructuredLifeGrid) Same(newGrid *StructuredLifeGrid) bool {
 	if l.rows != newGrid.rows || l.cols != newGrid.cols {
 		return false
 	}
@@ -98,11 +98,11 @@ func (l *StructuredLifeGrid) Randomize() {
 	}
 }
 
-func NewStructuredGrid(rows, cols int) StructuredLifeGrid {
+func NewStructuredGrid(rows, cols int) *StructuredLifeGrid {
 	grid := [][]Grid{}
 	for i := 0; i < rows; i++ {
 		col := make([]Grid, cols)
 		grid = append(grid, col)
 	}
-	return StructuredLifeGrid{grid: grid, rows: rows, cols: cols}
+	return &StructuredLifeGrid{grid: grid, rows: rows, cols: cols}
 }
