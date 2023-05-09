@@ -15,12 +15,12 @@ type Game struct {
 	alive *ebiten.Image
 	dead  *ebiten.Image
 
-	grid grid.LifeGrid
+	grid grid.StructuredLifeGrid
 
 	tickCount int
 }
 
-func NewGame(grid grid.LifeGrid) Game {
+func NewGame(grid grid.StructuredLifeGrid) Game {
 	alive := ebiten.NewImage(3, 3)
 	alive.Fill(color.Black)
 	dead := ebiten.NewImage(3, 3)
@@ -69,7 +69,7 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 func main() {
 	fmt.Println("Hello World")
 
-	grid := grid.NewGrid(300, 300)
+	grid := grid.NewStructuredGrid(300, 300)
 	grid.Randomize()
 
 	fmt.Println(grid.Print())

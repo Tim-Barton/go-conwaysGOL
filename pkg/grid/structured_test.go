@@ -6,7 +6,7 @@ import (
 
 func TestNewGrid(t *testing.T) {
 	// 3x3 grid all of all false
-	grid := NewGrid(3, 3)
+	grid := NewStructuredGrid(3, 3)
 	for i := range grid.grid {
 		for j, gridPoint := range grid.grid[i] {
 			if gridPoint.Status == 1 {
@@ -17,7 +17,7 @@ func TestNewGrid(t *testing.T) {
 }
 
 func TestDodgyGrid(t *testing.T) {
-	grid := NewGrid(3, 3)
+	grid := NewStructuredGrid(3, 3)
 	grid.Set(0, 0, Grid{1})
 	grid.Set(0, 1, Grid{1})
 	grid.Set(0, 2, Grid{1})
@@ -60,7 +60,7 @@ func TestDodgyGrid(t *testing.T) {
 
 func TestSameGrid(t *testing.T) {
 
-	grid := NewGrid(3, 3)
+	grid := NewStructuredGrid(3, 3)
 	grid.Set(0, 0, Grid{1})
 	grid.Set(0, 1, Grid{1})
 	grid.Set(0, 2, Grid{1})
@@ -69,7 +69,7 @@ func TestSameGrid(t *testing.T) {
 		t.Errorf("Grids should match")
 	}
 
-	newGrid1 := NewGrid(3, 3)
+	newGrid1 := NewStructuredGrid(3, 3)
 	newGrid1.Set(0, 0, Grid{1})
 	newGrid1.Set(0, 1, Grid{1})
 	newGrid1.Set(0, 2, Grid{1})
@@ -78,7 +78,7 @@ func TestSameGrid(t *testing.T) {
 		t.Errorf("Grids should match")
 	}
 
-	newGrid2 := NewGrid(3, 2)
+	newGrid2 := NewStructuredGrid(3, 2)
 	newGrid2.Set(0, 0, Grid{1})
 	newGrid2.Set(0, 1, Grid{1})
 
@@ -86,7 +86,7 @@ func TestSameGrid(t *testing.T) {
 		t.Errorf("Grids shouldn't match - different size")
 	}
 
-	newGrid3 := NewGrid(3, 3)
+	newGrid3 := NewStructuredGrid(3, 3)
 	newGrid3.Set(0, 0, Grid{1})
 	newGrid3.Set(0, 1, Grid{1})
 

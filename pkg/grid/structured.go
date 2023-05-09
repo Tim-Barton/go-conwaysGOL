@@ -1,4 +1,4 @@
-package main
+package grid
 
 import (
 	"fmt"
@@ -6,10 +6,10 @@ import (
 )
 
 type Grid struct {
-	status int
+	Status int
 }
 
-type LifeGrid struct {
+type StructuredLifeGrid struct {
 	grid [][]Grid
 
 	rows int
@@ -17,16 +17,16 @@ type LifeGrid struct {
 }
 
 func (g Grid) Evaluate(neighbours int) int {
-	if g.status == 1 && (neighbours == 2 || neighbours == 3) {
+	if g.Status == 1 && (neighbours == 2 || neighbours == 3) {
 		return 1
-	} else if g.status == 0 && neighbours == 3 {
+	} else if g.Status == 0 && neighbours == 3 {
 		return 1
 	}
 
 	return 0
 }
 
-func (l LifeGrid) Get(row, col int) (Grid, error) {
+func (l StructuredLifeGrid) Get(row, col int) (Grid, error) {
 	if row < 0 || row > l.rows-1 {
 		return Grid{-1}, fmt.Errorf("Nope")
 	}
@@ -36,7 +36,7 @@ func (l LifeGrid) Get(row, col int) (Grid, error) {
 	return l.grid[row][col], nil
 }
 
-func (l LifeGrid) Tick() LifeGrid {
+func (l StructuredLifeGrid) Tick() StructuredLifeGrid {
 	newGrid := [][]Grid{}
 	for row := range l.grid {
 		newColumns := []Grid{}
@@ -47,7 +47,7 @@ func (l LifeGrid) Tick() LifeGrid {
 					if !(k == row && m == col) {
 						neighbour, err := l.Get(k, m)
 						if err == nil {
-							neighbourCount += neighbour.status
+							neighbourCount += neighbour.Status
 						}
 					}
 				}
@@ -57,10 +57,10 @@ func (l LifeGrid) Tick() LifeGrid {
 		}
 		newGrid = append(newGrid, newColumns)
 	}
-	return LifeGrid{grid: newGrid, rows: l.rows, cols: l.cols}
+	return StructuredLifeGrid{grid: newGrid, rows: l.rows, cols: l.cols}
 }
 
-func (l LifeGrid) Same(newGrid LifeGrid) bool {
+func (l StructuredLifeGrid) Same(newGrid StructuredLifeGrid) bool {
 	if l.rows != newGrid.rows || l.cols != newGrid.cols {
 		return false
 	}
@@ -74,23 +74,23 @@ func (l LifeGrid) Same(newGrid LifeGrid) bool {
 	return true
 }
 
-func (l *LifeGrid) Set(row, column int, value Grid) {
+func (l *StructuredLifeGrid) Set(row, column int, value Grid) {
 	l.grid[row][column] = value
 }
 
-func (l LifeGrid) Print() string {
+func (l StructuredLifeGrid) Print() string {
 	return fmt.Sprintf("%v", l.grid)
 }
 
-func (l LifeGrid) Rows() int {
+func (l StructuredLifeGrid) Rows() int {
 	return l.rows
 }
 
-func (l LifeGrid) Cols() int {
+func (l StructuredLifeGrid) Cols() int {
 	return l.cols
 }
 
-func (l *LifeGrid) Randomize() {
+func (l *StructuredLifeGrid) Randomize() {
 	for row := range l.grid {
 		for col := range l.grid[row] {
 			l.Set(row, col, Grid{int(rand.Int31n(2))})
@@ -98,11 +98,11 @@ func (l *LifeGrid) Randomize() {
 	}
 }
 
-func NewGrid(rows, cols int) LifeGrid {
+func NewStructuredGrid(rows, cols int) StructuredLifeGrid {
 	grid := [][]Grid{}
 	for i := 0; i < rows; i++ {
 		col := make([]Grid, cols)
 		grid = append(grid, col)
 	}
-	return LifeGrid{grid: grid, rows: rows, cols: cols}
+	return StructuredLifeGrid{grid: grid, rows: rows, cols: cols}
 }
