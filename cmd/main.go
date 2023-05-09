@@ -14,6 +14,8 @@ type Game struct {
 	dead  *ebiten.Image
 
 	grid LifeGrid
+
+	tickCount int
 }
 
 func NewGame(grid LifeGrid) Game {
@@ -22,13 +24,25 @@ func NewGame(grid LifeGrid) Game {
 	dead := ebiten.NewImage(300, 300)
 	dead.Fill(color.White)
 	return Game{
-		alive: alive,
-		dead:  dead,
-		grid:  grid,
+		alive:     alive,
+		dead:      dead,
+		grid:      grid,
+		tickCount: 1,
 	}
 }
 
 func (g *Game) Update() error {
+	if g.tickCount == 60 {
+		g.tickCount = 0
+		tickStart := time.Now()
+		newGrid := g.grid.Tick()
+		tickEnd := time.Now()
+
+		fmt.Printf("Tick took %v\n", tickEnd.Sub(tickStart))
+		g.grid = newGrid
+		fmt.Println(g.grid.Print())
+	}
+	g.tickCount++
 	return nil
 }
 
@@ -58,25 +72,7 @@ func main() {
 	grid.Set(0, 1, Grid{1})
 	grid.Set(0, 2, Grid{1})
 
-	cont := true
-	i := 0
-
 	fmt.Println(grid.Print())
-	for cont {
-		tickStart := time.Now()
-		newGrid := grid.Tick()
-		tickEnd := time.Now()
-
-		cont = !grid.Same(newGrid)
-
-		fmt.Printf("Tick %d, took %v, while continue %t\n", i, tickEnd.Sub(tickStart), cont)
-		i++
-		grid = newGrid
-		fmt.Println(grid.Print())
-
-		time.Sleep(time.Second)
-
-	}
 
 	ebiten.SetWindowSize(900, 900)
 	ebiten.SetWindowTitle("Hello, World!")
