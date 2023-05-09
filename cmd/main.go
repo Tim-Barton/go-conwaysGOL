@@ -15,12 +15,12 @@ type Game struct {
 	alive *ebiten.Image
 	dead  *ebiten.Image
 
-	grid grid.StructuredLifeGrid
+	grid grid.LifeGrid
 
 	tickCount int
 }
 
-func NewGame(grid grid.StructuredLifeGrid) Game {
+func NewGame(grid grid.LifeGrid) Game {
 	alive := ebiten.NewImage(3, 3)
 	alive.Fill(color.Black)
 	dead := ebiten.NewImage(3, 3)
@@ -55,7 +55,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 			geo := ebiten.GeoM{}
 			geo.Translate(float64(3*j), float64(3*i))
 			status, _ := g.grid.Get(i, j)
-			if status.Status == 0 {
+			if status == 0 {
 				screen.DrawImage(g.dead, &ebiten.DrawImageOptions{GeoM: geo})
 			}
 		}

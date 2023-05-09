@@ -18,9 +18,9 @@ func TestNewGrid(t *testing.T) {
 
 func TestDodgyGrid(t *testing.T) {
 	grid := NewStructuredGrid(3, 3)
-	grid.Set(0, 0, Grid{1})
-	grid.Set(0, 1, Grid{1})
-	grid.Set(0, 2, Grid{1})
+	grid.Set(0, 0, 1)
+	grid.Set(0, 1, 1)
+	grid.Set(0, 2, 1)
 
 	newGrid := grid.Tick()
 
@@ -42,14 +42,15 @@ func TestDodgyGrid(t *testing.T) {
 	}
 	//new grid 0,1 & 1,1 should be Alive
 	//fmt.Println(newGrid.Print())
-	for i := range newGrid.grid {
-		for j, gridPoint := range newGrid.grid[i] {
+	for i := 0; i < newGrid.Rows(); i++ {
+		for j := 0; j < newGrid.Cols(); j++ {
+			gridPoint, _ := newGrid.Get(i, j)
 			if (i == 0 && j == 1) || (i == 1 && j == 1) {
-				if gridPoint.Status == 0 {
+				if gridPoint == 0 {
 					t.Errorf("New Grid at %d:%d was Dead", i, j)
 				}
 			} else {
-				if gridPoint.Status == 1 {
+				if gridPoint == 1 {
 					t.Errorf("New Grid at %d:%d was Alive", i, j)
 				}
 			}
@@ -61,34 +62,34 @@ func TestDodgyGrid(t *testing.T) {
 func TestSameGrid(t *testing.T) {
 
 	grid := NewStructuredGrid(3, 3)
-	grid.Set(0, 0, Grid{1})
-	grid.Set(0, 1, Grid{1})
-	grid.Set(0, 2, Grid{1})
+	grid.Set(0, 0, 1)
+	grid.Set(0, 1, 1)
+	grid.Set(0, 2, 1)
 
 	if !grid.Same(grid) {
 		t.Errorf("Grids should match")
 	}
 
 	newGrid1 := NewStructuredGrid(3, 3)
-	newGrid1.Set(0, 0, Grid{1})
-	newGrid1.Set(0, 1, Grid{1})
-	newGrid1.Set(0, 2, Grid{1})
+	newGrid1.Set(0, 0, 1)
+	newGrid1.Set(0, 1, 1)
+	newGrid1.Set(0, 2, 1)
 
 	if !grid.Same(newGrid1) {
 		t.Errorf("Grids should match")
 	}
 
 	newGrid2 := NewStructuredGrid(3, 2)
-	newGrid2.Set(0, 0, Grid{1})
-	newGrid2.Set(0, 1, Grid{1})
+	newGrid2.Set(0, 0, 1)
+	newGrid2.Set(0, 1, 1)
 
 	if grid.Same(newGrid2) {
 		t.Errorf("Grids shouldn't match - different size")
 	}
 
 	newGrid3 := NewStructuredGrid(3, 3)
-	newGrid3.Set(0, 0, Grid{1})
-	newGrid3.Set(0, 1, Grid{1})
+	newGrid3.Set(0, 0, 1)
+	newGrid3.Set(0, 1, 1)
 
 	if grid.Same(newGrid2) {
 		t.Errorf("Grids shouldn't match - same size, different values")

@@ -26,17 +26,17 @@ func (g Grid) Evaluate(neighbours int) int {
 	return 0
 }
 
-func (l StructuredLifeGrid) Get(row, col int) (Grid, error) {
+func (l StructuredLifeGrid) Get(row, col int) (int, error) {
 	if row < 0 || row > l.rows-1 {
-		return Grid{-1}, fmt.Errorf("Nope")
+		return -1, fmt.Errorf("Nope")
 	}
 	if col < 0 || col > l.cols-1 {
-		return Grid{-1}, fmt.Errorf("Nope")
+		return -1, fmt.Errorf("Nope")
 	}
-	return l.grid[row][col], nil
+	return l.grid[row][col].Status, nil
 }
 
-func (l StructuredLifeGrid) Tick() StructuredLifeGrid {
+func (l StructuredLifeGrid) Tick() LifeGrid {
 	newGrid := [][]Grid{}
 	for row := range l.grid {
 		newColumns := []Grid{}
@@ -47,7 +47,7 @@ func (l StructuredLifeGrid) Tick() StructuredLifeGrid {
 					if !(k == row && m == col) {
 						neighbour, err := l.Get(k, m)
 						if err == nil {
-							neighbourCount += neighbour.Status
+							neighbourCount += neighbour
 						}
 					}
 				}
@@ -57,7 +57,7 @@ func (l StructuredLifeGrid) Tick() StructuredLifeGrid {
 		}
 		newGrid = append(newGrid, newColumns)
 	}
-	return StructuredLifeGrid{grid: newGrid, rows: l.rows, cols: l.cols}
+	return &StructuredLifeGrid{grid: newGrid, rows: l.rows, cols: l.cols}
 }
 
 func (l StructuredLifeGrid) Same(newGrid StructuredLifeGrid) bool {
@@ -74,8 +74,8 @@ func (l StructuredLifeGrid) Same(newGrid StructuredLifeGrid) bool {
 	return true
 }
 
-func (l *StructuredLifeGrid) Set(row, column int, value Grid) {
-	l.grid[row][column] = value
+func (l *StructuredLifeGrid) Set(row, column, value int) {
+	l.grid[row][column] = Grid{value}
 }
 
 func (l StructuredLifeGrid) Print() string {
@@ -93,7 +93,7 @@ func (l StructuredLifeGrid) Cols() int {
 func (l *StructuredLifeGrid) Randomize() {
 	for row := range l.grid {
 		for col := range l.grid[row] {
-			l.Set(row, col, Grid{int(rand.Int31n(2))})
+			l.Set(row, col, int(rand.Int31n(2)))
 		}
 	}
 }
